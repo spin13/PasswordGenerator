@@ -46,21 +46,18 @@ function genPass(){
 	RetLowUpp="";
 	RetLowUppMark="";
 
-	xorInit(Date.now());
 	len = LOWER.length
 	for(var i=0;i<N;i++){
 		RetLow += LOWER[Math.abs(xorshift())%len];
 	}
 
-	xorInit(Date.now());
 	len = DEFAULT_PHRASES.length;
-		for(var i=0;i<N;i++){
+	for(var i=0;i<N;i++){
 		RetLowUpp += DEFAULT_PHRASES[Math.abs(xorshift())%len];
 	}
 
-	xorInit(Date.now());
 	len = AND_MARK.length;
-		for(var i=0;i<N;i++){
+	for(var i=0;i<N;i++){
 		RetLowUppMark += AND_MARK[Math.abs(xorshift())%len];
 	}
 
