@@ -1,0 +1,100 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>パスワードジェネレータ</title>
+
+<script>
+var LOWER=[
+    'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','v','w','x','y','z','1','2','3','4','5','6','7','8','9','0'
+];
+
+var DEFAULT_PHRASES=[
+    'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','1','2','3','4','5','6','7','8','9','0'
+];
+
+var MARK=[
+    '!', '#', '$', '*', ',', '-', '.', '/', '@', '^', '_', '|', '~'
+];
+var NUMBERS=[
+    '1','2','3','4','5','6','7','8','9','0'
+];
+
+
+var AND_MARK = DEFAULT_PHRASES.concat(MARK);
+
+
+var x=123456789;
+var y=362436069;
+var z=521288629;
+var w=88675123;
+
+function xorInit(seed){
+	w=seed;
+}
+
+function xorshift(){
+	t= x^(x<<11);
+	x=y; y=z; z=w;
+	return (w = (w^(w>>>19))^(t^(t>>>8)));
+} 
+
+function genPass(){
+	N = document.getElementById("len").value;
+
+	RetLow="";
+	RetLowUpp="";
+	RetLowUppMark="";
+
+	xorInit(Date.now());
+	len = LOWER.length
+	for(var i=0;i<N;i++){
+		RetLow += LOWER[Math.abs(xorshift())%len];
+	}
+
+	xorInit(Date.now());
+	len = DEFAULT_PHRASES.length;
+		for(var i=0;i<N;i++){
+		RetLowUpp += DEFAULT_PHRASES[Math.abs(xorshift())%len];
+	}
+
+	xorInit(Date.now());
+	len = AND_MARK.length;
+		for(var i=0;i<N;i++){
+		RetLowUppMark += AND_MARK[Math.abs(xorshift())%len];
+	}
+
+	document.getElementById("lower").value = RetLow;
+	document.getElementById("lower_upper").value = RetLowUpp;
+	document.getElementById("lower_upper_mark").value = RetLowUppMark;
+
+}
+
+</script>
+
+</head>
+<body>
+<pre>
+
+パスワード長(ここに1~Nまでの数字入れる)
+<input id="len" type="number">
+
+小文字
+<input id="lower" type="text" value="" size="50">
+
+小文字大文字
+<input id="lower_upper" type="text" value="" size="50">
+
+小文字大文字記号
+<input id="lower_upper_mark" type="text" value="" size="50">
+
+<input type="button" value="生成" onClick="genPass()"></input>
+
+
+<b>使い方</b>
+"パスワード長"に出力したいパスワード長を入れて"生成"ボタンを押す
+押すたびに出力されるものは変わる
+
+</pre>
+</body>
+</html>
